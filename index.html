@@ -14,10 +14,10 @@
 
 <body>
   <header>
-    <h1>Calculadora Real x Bitcoin</h1>
+    <h1>Conversor de Real para Bitcoin</h1>
   </header>
 
-  <main class="container">
+  <main>
     <section aria-labelledby="titulo-calculadora">
       <img src="img/bitcoin.png" alt="Ícone do Bitcoin">
       <h2 id="titulo-calculadora">Conversor</h2>
@@ -30,17 +30,20 @@
         <p id="btcResultado">Resultado Aqui!</p>
         <small id="cotacaoBTC">( Cotação: R$ )</small>
       </output>
+      <section aria-labelledby="titulo-grafico">
+        <h2 id="titulo-grafico">Histórico de Preço do Bitcoin (30 dias)</h2>
+        <canvas id="graficoBTC" width="400" height="200"></canvas>
+      </section>
+      
     </section>
 
-    <section id="grafico-section" aria-labelledby="titulo-grafico">
-      <h2 id="titulo-grafico">Histórico de Preço do Bitcoin (30 dias)</h2>
-      <canvas id="graficoBTC" width="400" height="200"></canvas>
-    </section>
+    
+
   </main>
 
   <footer class="rodape">
     <div class="rodape-conteudo">
-      <img src="img/eu.jpg" alt="">
+        <img src="img/eu.jpg" alt="">
       <h2>Eribaldo Oliveira</h2>
       <nav aria-label="Links sociais">
         <p class="links">
@@ -50,12 +53,16 @@
         </p>
       </nav>
       <div class="contato-whatsapp">
-        <a href="https://wa.me/5579988035219?text=Olá%2C%20vi%20seu%20portfólio%20e%20gostaria%20de%20conversar!" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+        <a href="https://wa.me/5579988035219?text=Olá%2C%20vi%20seu%20portfólio%20e%20gostaria%20de%20conversar!"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="btn-whatsapp">
           📱 Fale comigo no WhatsApp: (79) 9 8803-5219
         </a>
       </div>
     </div>
     <p class="copy">&copy; 2025 - Calculadora Real x Bitcoin | Desenvolvido por Eribaldo Oliveira</p>
   </footer>
+
 </body>
 </html>
