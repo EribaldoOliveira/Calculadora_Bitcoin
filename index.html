@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="CSS/styles.css">
-  <link rel="icon" href="img/bitcoin.png" />
-
+  <title>Conversor BTC - Eribaldo Oliveira</title>
+  <link rel="stylesheet" href="CSS/styles.css" />
+  <link rel="icon" href="img/bitcoin.png" type="image/png" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/script.js" defer></script>
-  
-  <title>Calculadora BTC - Eribaldo Oliveira</title>
 </head>
 
 <body>
@@ -18,51 +16,48 @@
   </header>
 
   <main>
-    <section aria-labelledby="titulo-calculadora">
-      <img src="img/bitcoin.png" alt="Ícone do Bitcoin">
-      <h2 id="titulo-calculadora">Conversor</h2>
-      <form onsubmit="converter(); return false;">
-        <label for="valorReal">Digite o valor em R$:</label>
-        <input type="number" id="valorReal" placeholder="Digite o valor em R$" required />
+    <section class="conversor" aria-labelledby="titulo-conversor">
+      <img src="img/bitcoin.png" alt="Ícone representando Bitcoin" class="logo-btc">
+      <h2 id="titulo-conversor">Conversor</h2>
+
+      <form id="formConversor">
+        <input type="number" id="valorReal" placeholder="Valor em Reais">
         <button type="submit">Converter</button>
       </form>
+
       <output id="resultado" aria-live="polite">
-        <p id="btcResultado">Resultado Aqui!</p>
-        <small id="cotacaoBTC">( Cotação: R$ )</small>
+        <p id="btcResultado">Resultado aparecerá aqui!</p>
+        <small id="cotacaoBTC">(Cotação atual: R$ --)</small>
       </output>
-      <section aria-labelledby="titulo-grafico">
-        <h2 id="titulo-grafico">Histórico de Preço do Bitcoin (30 dias)</h2>
-        <canvas id="graficoBTC" width="400" height="200"></canvas>
-      </section>
-      
     </section>
 
-    
-
+    <aside class="grafico" aria-labelledby="titulo-grafico">
+      <h2 id="titulo-grafico">Histórico do Bitcoin (30 dias)</h2>
+      <canvas id="graficoBTC" width="400" height="200" aria-label="Gráfico de preços do Bitcoin"></canvas>
+    </aside>
   </main>
 
   <footer class="rodape">
     <div class="rodape-conteudo">
-        <img src="img/eu.jpg" alt="">
+      <img src="img/eu.jpg" alt="Foto de Eribaldo Oliveira" class="foto-perfil">
       <h2>Eribaldo Oliveira</h2>
-      <nav aria-label="Links sociais">
+
+      <nav aria-label="Links Sociais">
         <p class="links">
           🔗 <a href="https://github.com/EribaldoOliveira" target="_blank" rel="noopener noreferrer">GitHub</a> |
           🔗 <a href="https://www.linkedin.com/in/eribaldo-oliveira/" target="_blank" rel="noopener noreferrer">LinkedIn</a> |
           🌐 <a href="https://meuportfoli0.com" target="_blank" rel="noopener noreferrer">Portfólio</a>
         </p>
       </nav>
+
       <div class="contato-whatsapp">
-        <a href="https://wa.me/5579988035219?text=Olá%2C%20vi%20seu%20portfólio%20e%20gostaria%20de%20conversar!"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="btn-whatsapp">
+        <a href="https://wa.me/5579988035219?text=Olá%2C%20vi%20seu%20portfólio%20e%20gostaria%20de%20conversar!" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
           📱 Fale comigo no WhatsApp: (79) 9 8803-5219
         </a>
       </div>
     </div>
-    <p class="copy">&copy; 2025 - Calculadora Real x Bitcoin | Desenvolvido por Eribaldo Oliveira</p>
-  </footer>
 
+    <p class="copy">&copy; 2025 - Conversor Real x Bitcoin | Desenvolvido por Eribaldo Oliveira</p>
+  </footer>
 </body>
 </html>

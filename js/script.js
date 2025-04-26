@@ -1,80 +1,111 @@
+// Seletores
+const valorRealInput = document.getElementById('valorReal');
+const form = document.getElementById('formConversor');
+const btcResultado = document.getElementById('btcResultado');
+const cotacaoInfo = document.getElementById('cotacaoBTC');
+const ctx = document.getElementById('graficoBTC').getContext('2d');
+
+// Variáveis
+let cotacaoBitcoin = 0;
+let graficoBTC;
+
+// Função para buscar a cotação atual
+async function buscarCotacaoAtual() {
+  try {
+    const resposta = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
+    const dados = await resposta.json();
+    cotacaoBitcoin = dados.bitcoin.brl;
+    cotacaoInfo.textContent = `(Cotação atual: R$ ${cotacaoBitcoin.toLocaleString('pt-BR', { minimumFractionDigits: 2 })})`;
+  } catch (erro) {
+    cotacaoInfo.textContent = 'Erro ao buscar cotação';
+    console.error('Erro ao buscar cotação:', erro);
+  }
+}
+
+// Função para converter Real para Bitcoin
 function converter() {
-    const valorReal = parseFloat(document.getElementById("valorReal").value);
-    const cotacaoBTC = 250000; // Valor fictício, pode ser dinâmico com API futuramente
-    const resultado = valorReal / cotacaoBTC;
+  const valorReal = parseFloat(valorRealInput.value);
 
-    const saida = document.getElementById("resultado");
-    saida.textContent = `≈ ${resultado.toFixed(8)} BTC`;
+  if (isNaN(valorReal) || valorReal <= 0) {
+    btcResultado.textContent = 'Digite um valor válido!';
+    return;
   }
 
+  const valorBTC = valorReal / cotacaoBitcoin;
+  btcResultado.textContent = `≈ ${valorBTC.toFixed(8)} BTC`;
+}
 
-  async function converter() {
-    const valorReal = parseFloat(document.getElementById("valorReal").value);
-    const resultadoBTC = document.getElementById("btcResultado");
-    const cotacaoInfo = document.getElementById("cotacaoBTC");
+// Função para buscar histórico e gerar gráfico (30 dias)
+async function gerarGrafico() {
+  try {
+    const resposta = await fetch(
+      'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=brl&days=30&interval=daily'
+    );
+    const dados = await resposta.json();
 
-    if (isNaN(valorReal)) {
-      resultadoBTC.textContent = "Por favor, digite um valor válido.";
-      cotacaoInfo.textContent = "";
-      return;
+    const labels = dados.prices.map(preco => {
+      const data = new Date(preco[0]);
+      return `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}`;
+    });
+
+    const valores = dados.prices.map(preco => preco[1]);
+
+    if (graficoBTC) {
+      graficoBTC.destroy();
     }
 
-    try {
-      const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl");
-      const data = await response.json();
-      const cotacaoBTC = data.bitcoin.brl;
-
-      const valorConvertido = valorReal / cotacaoBTC;
-      resultadoBTC.textContent = `≈ ${valorConvertido.toFixed(8)} BTC`;
-      cotacaoInfo.textContent = `(Cotação: R$ ${cotacaoBTC.toLocaleString('pt-BR')})`;
-    } catch (error) {
-      resultadoBTC.textContent = "Erro ao buscar cotação.";
-      cotacaoInfo.textContent = "";
-      console.error("Erro ao obter cotação do Bitcoin:", error);
-    }
-  }
-
-  async function carregarGraficoBTC() {
-    try {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=brl&days=30"
-      );
-      const data = await response.json();
-      const labels = data.prices.map(item => {
-        const date = new Date(item[0]);
-        return `${date.getDate()}/${date.getMonth() + 1}`;
-      });
-  
-      const valores = data.prices.map(item => item[1]);
-  
-      const ctx = document.getElementById("graficoBTC").getContext("2d");
-  
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Preço do BTC (R$)",
-            data: valores,
-            borderColor: "orange",
-            backgroundColor: "rgba(255, 165, 0, 0.2)",
-            tension: 0.2,
-            pointRadius: 0,
-          }]
+    graficoBTC = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Preço do Bitcoin (R$)',
+          data: valores,
+          borderColor: '#f7931a',
+          backgroundColor: 'rgba(247, 147, 26, 0.2)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2,
+          pointBackgroundColor: '#f7931a',
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
         },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: false
+        scales: {
+          y: {
+            beginAtZero: false,
+            ticks: {
+              callback: function(value) {
+                return 'R$ ' + value.toLocaleString('pt-BR');
+              },
+              color: '#333'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#333'
             }
           }
         }
-      });
-    } catch (error) {
-      console.error("Erro ao carregar gráfico do BTC:", error);
-    }
-  }
-  
-  window.addEventListener("load", carregarGraficoBTC);
-  
+      }
+    });
 
+  } catch (erro) {
+    console.error('Erro ao gerar gráfico:', erro);
+  }
+}
+
+// Evento do formulário
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  converter();
+});
+
+// Iniciar a aplicação
+buscarCotacaoAtual();
+gerarGrafico();
